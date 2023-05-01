@@ -1,61 +1,120 @@
 USE bdLivrariaBrasileira
 
--- a) O total de livros que comeÁam com a letra P
-SELECT count(codLivro) AS 'Quantidade de livros que comeÁam com a letra P' FROM tbLivro
+-- a) O total de livros que come√ßam com a letra P
+SELECT count(codLivro) AS 'Quantidade de livros que come√ßam com a letra P' FROM tbLivro
 	WHERE nomeLivro LIKE 'p%'
 
--- c) O menor n˙mero de p·ginas entre todos os livros
-SELECT min(numPaginas) AS 'A menor quantidade de p·ginas que um livro possui' FROM tbLivro
+-- b) O maior n√∫mero de p√°ginas entre todos os livros
+SELECT max(numPaginas) AS 'Maior numero de p√°ginas' FROM tbLivro
 
--- e) A soma do n˙mero de p·ginas dos livros de editora cÛdigo 01
+-- c) O menor n√∫mero de p√°ginas entre todos os livros
+SELECT min(numPaginas) AS 'A menor quantidade de p√°ginas que um livro possui' FROM tbLivro
+
+-- d) A m√©dia de p√°ginas entre todos os livros
+SELECT avg(numPaginas) AS 'M√©dia de paginas' FROM tbLivro
+
+-- e) A soma do n√∫mero de p√°ginas dos livros de editora c√≥digo 01
 SELECT sum(numPaginas) AS 'Total de paginas dos livros da editora Melhoramentos' FROM tbLivro
 	WHERE codEditora = 1
 
--- g) A mÈdia dos n˙meros de p·ginas dos livros que sejam do autor cÛdigo 03
-SELECT avg(numPaginas) AS 'MÈdia do n˙mero de p·ginas da autora J.K. Rowling' FROM tbLivro
+-- f) A soma dos n√∫meros de p√°ginas dos livros que come√ßam com a letra A
+SELECT sum(numPaginas) AS 'Soma das paginas A' FROM tbLivro
+	WHERE nomeLivro LIKE 'A%'
+
+-- g) A m√©dia dos n√∫meros de p√°ginas dos livros que sejam do autor c√≥digo 03
+SELECT avg(numPaginas) AS 'M√©dia do n√∫mero de p√°ginas da autora J.K. Rowling' FROM tbLivro
 	WHERE codAutor = 3
 
--- i) A mÈdia do n˙mero de p·ginas dos livros que tenham a palavra ìestrelaî em seu nome
-SELECT avg(numPaginas) AS 'MÈdia do n˙mero de p·ginas que possuem "estrela" em seu nome' FROM tbLivro	
+-- h) A quantidade de livros da editora de c√≥digo 04
+SELECT count(codLivro) AS 'Quantidade de livros editora 4' FROM tbLivro
+	WHERE codEditora = 4
+
+-- i) A m√©dia do n√∫mero de p√°ginas dos livros que tenham a palavra ‚Äúestrela‚Äù em seu nome
+SELECT avg(numPaginas) AS 'M√©dia do n√∫mero de p√°ginas que possuem "estrela" em seu nome' FROM tbLivro	
 	WHERE nomeLivro LIKE '%estrela%'
 
--- k) A quantidade de livros agrupado pelo nome do gÍnero
+-- j) A quantidade de livros que tenham a palavra ‚Äúpoema‚Äù em seu nome
+SELECT count(codLivro) AS 'Livros com poema' FROM tbLivro	
+	WHERE nomeLivro LIKE '%poema%'
+
+-- k) A quantidade de livros agrupado pelo nome do g√™nero
 SELECT nomeGenero, count(codLivro) AS 'Quantidade de livros' FROM tbLivro
 	RIGHT JOIN tbGenero ON tbLivro.codGenero = tbGenero.codGenero
 		GROUP BY nomeGenero
 
--- m) A mÈdia de p·ginas agrupada pelo nome do autor em ordem alfabÈtica (de A a Z) (EXERCICIO 13) (EXERCICIO 13) (EXERCICIO 13) (EXERCICIO 13) (EXERCICIO 13)
-SELECT nomeAutor, avg(numPaginas) AS 'MÈdia do n˙mero de p·ginas' FROM tbLivro
+-- l) A soma das p√°ginas agrupada pelo nome do autor
+SELECT nomeAutor, sum(numPaginas) AS 'Quantidade de paginas' FROM tbAutor
+	LEFT JOIN tbLivro ON tbLivro.codAutor = tbAutor.codAutor
+		GROUP BY nomeAutor
+
+-- m) A m√©dia de p√°ginas agrupada pelo nome do autor em ordem alfab√©tica (de A a Z) (EXERCICIO 13) (EXERCICIO 13) (EXERCICIO 13) (EXERCICIO 13) (EXERCICIO 13)
+SELECT nomeAutor, avg(numPaginas) AS 'M√©dia do n√∫mero de p√°ginas' FROM tbLivro
 	RIGHT JOIN tbAutor ON tbLivro.codAutor = tbAutor.codAutor
 		GROUP BY nomeAutor
 
--- o) A soma de p·ginas dos livros agrupados pelo nome do autor que sejam de autores cujo nome comece com a letra ìCî
-SELECT nomeAutor, sum(numPaginas) AS 'Soma do n˙mero de p·ginas' FROM tbLivro
+-- n) A quantidade de livros agrupada pelo nome da editora em ordem alfab√©tica inversa (de Z a A)
+SELECT nomeEditora, count(codLivro) AS 'Quantidade de livros' FROM tbEditora
+	LEFT JOIN tbLivro ON tbEditora.codEditora = tbLivro.codEditora
+		GROUP BY nomeEditora
+			ORDER BY nomeEditora DESC
+
+-- o) A soma de p√°ginas dos livros agrupados pelo nome do autor que sejam de autores cujo nome comece com a letra ‚ÄúC‚Äù
+SELECT nomeAutor, sum(numPaginas) AS 'Soma do n√∫mero de p√°ginas' FROM tbLivro
 	RIGHT JOIN tbAutor ON tbLivro.codAutor = tbAutor.codAutor
 		WHERE nomeAutor LIKE 'C%'
 			GROUP BY nomeAutor
 
--- q) A soma das p·ginas dos livros agrupadas pelo nome da editora cujo n˙mero de p·ginas esteja entre 200 e 500 (inclusive)
-SELECT nomeEditora, sum(numPaginas) AS 'Soma do n˙mero de p·ginas' FROM tbLivro
+-- p) A quantidade de livros agrupados pelo nome do autor, cujo nome do autor seja ‚ÄúMachado de Assis‚Äù ou ‚ÄúCora Coralina‚Äù ou ‚ÄúGraciliano Ramos‚Äù ou ‚ÄúClarice Lispector‚Äù
+SELECT nomeAutor, count(codLivro) AS 'Quantidade de livros' FROM tbAutor
+	LEFT JOIN tbLivro ON tbAutor.codAutor = tbLivro.codAutor
+		WHERE nomeAutor = 'Machado de Assis' OR nomeAutor = 'Cora Coralina' OR nomeAutor = 'Graciliano Ramos' OR nomeAutor = 'Clarice Lispector'
+			GROUP BY nomeAutor
+
+-- q) A soma das p√°ginas dos livros agrupadas pelo nome da editora cujo n√∫mero de p√°ginas esteja entre 200 e 500 (inclusive)
+SELECT nomeEditora, sum(numPaginas) AS 'Soma do n√∫mero de p√°ginas' FROM tbLivro
 	RIGHT JOIN tbEditora ON tbEditora.codEditora = tbLivro.codEditora
 		WHERE numPaginas BETWEEN 200 and 500
 			GROUP BY nomeEditora
 
--- s) O nome dos livros ao lado do nome do autor somente daqueles cujo nome da editora for ìCia das Letrasî
+-- r) O nome dos livros ao lado do nome das editoras e do nome dos autores
+SELECT nomeLivro, nomeEditora, nomeAutor FROM tbLivro
+	JOIN tbEditora ON tbEditora.codEditora = tbLivro.codEditora
+		JOIN tbAutor ON tbAutor.codAutor = tbLivro.codAutor
+
+-- s) O nome dos livros ao lado do nome do autor somente daqueles cujo nome da editora for ‚ÄúCia das Letras‚Äù
 SELECT nomeLivro, nomeAutor FROM tbLivro
 	JOIN tbAutor ON tbLivro.codAutor = tbAutor.codAutor
 		JOIN tbEditora ON tbLivro.codEditora = tbEditora.codEditora
 			WHERE nomeEditora = 'Cia das Letras'
 
--- u) Os nomes dos autores ao lado dos nomes dos livros, inclusive daqueles autores que n„o tem livros cadastrados
+-- t)  O nome dos  livros  ao  lado  dos  nomes dos  autores,  somente  dos livros que n√£o  forem do autor ‚Äú√ârico Ver√≠ssimo‚Äù
+SELECT nomeLivro, nomeAutor FROM tbLivro
+	JOIN tbAutor ON tbLivro.codAutor = tbAutor.codAutor
+		WHERE nomeAutor != '√ârico Ver√≠ssimo'
+
+-- u) Os nomes dos autores ao lado dos nomes dos livros, inclusive daqueles autores que n√£o tem livros cadastrados
 SELECT nomeAutor, nomeLivro FROM tbAutor
 	LEFT JOIN tbLivro ON tbAutor.codAutor = tbLivro.codAutor
 
--- w) O nome dos autores ao lado dos nomes dos livros, indiferente do autor ter ou n„o livro publicado, e indiferente do livro pertencer a algum autor
+-- v) Os nomes dos autores ao lado dos nomes dos livros, inclusive daqueles livros que n√£o tem autores cadastrados
+SELECT nomeAutor, nomeLivro FROM tbAutor
+	RIGHT JOIN tbLivro ON tbAutor.codAutor = tbLivro.codAutor
+
+-- w) O nome dos autores ao lado dos nomes dos livros, indiferente do autor ter ou n√£o livro publicado, e indiferente do livro pertencer a algum autor
 SELECT nomeAutor, nomeLivro FROM tbLivro
 	FULL JOIN tbAutor ON tbAutor.codAutor = tbLivro.codAutor
 
--- y) Somente os nomes dos autores que n„o tem livros cadastrados
+-- x) Criar um select que associe os nomes de todos os livros ao lado do nome da editora √Åtica.
+SELECT nomeLivro, nomeEditora FROM tbLivro
+	CROSS JOIN tbEditora 
+		WHERE nomeEditora = '√Ätica'
+
+-- y) Somente os nomes dos autores que n√£o tem livros cadastrados
 SELECT nomeAutor FROM tbAutor
 	LEFT JOIN tbLivro ON tbAutor.codAutor = tbLivro.codAutor
 		WHERE tbLivro.codAutor IS NULL
+
+-- z) Os nomes dos g√™neros que n√£o possuem nenhum livro cadastrado
+SELECT nomeGenero FROM tbGenero
+	RIGHT JOIN tbLivro ON tbLivro.codGenero = tbGenero.codGenero
+		WHERE tbLivro.codGenero = NULL

@@ -51,6 +51,7 @@ SELECT nomeAutor, sum(numPaginas) AS 'Quantidade de paginas' FROM tbAutor
 SELECT nomeAutor, avg(numPaginas) AS 'Média do número de páginas' FROM tbLivro
 	RIGHT JOIN tbAutor ON tbLivro.codAutor = tbAutor.codAutor
 		GROUP BY nomeAutor
+			ORDER BY nomeAutor
 
 -- n) A quantidade de livros agrupada pelo nome da editora em ordem alfabética inversa (de Z a A)
 SELECT nomeEditora, count(codLivro) AS 'Quantidade de livros' FROM tbEditora
@@ -116,5 +117,5 @@ SELECT nomeAutor FROM tbAutor
 
 -- z) Os nomes dos gêneros que não possuem nenhum livro cadastrado
 SELECT nomeGenero FROM tbGenero
-	RIGHT JOIN tbLivro ON tbLivro.codGenero = tbGenero.codGenero
-		WHERE tbLivro.codGenero = NULL
+	LEFT JOIN tbLivro ON tbLivro.codGenero = tbGenero.codGenero
+		WHERE tbLivro.codGenero IS NULL

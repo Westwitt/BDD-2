@@ -38,3 +38,4 @@ CREATE TABLE tbItensVenda(
 	, subTotalItensVenda SMALLMONEY NOT NULL
 	, codVenda INT FOREIGN KEY REFERENCES tbVenda(codVenda)
 	, codProduto INT FOREIGN KEY REFERENCES tbProduto(codProduto)
+)

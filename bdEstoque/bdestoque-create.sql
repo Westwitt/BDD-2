@@ -18,11 +18,16 @@ CREATE TABLE tbCliente(
 	, sexoCliente CHAR(1)
 	, dataNascimentoCliente DATE NOT NULL
 )
+CREATE TABLE tbVendedor(
+	codVendedor INT PRIMARY KEY IDENTITY(1,1)
+	, nomeVendedor VARCHAR(50) NOT NULL
+)
 CREATE TABLE tbVenda (
 	codVenda INT PRIMARY KEY IDENTITY(1,1)
 	, dataVenda DATE NOT NULL 
 	, valorTotalVenda SMALLMONEY NOT NULL
 	, codCliente INT FOREIGN KEY REFERENCES tbCliente(codCliente)
+	, codVendedor INT FOREIGN KEY REFERENCES tbVendedor(codVendedor)
 )
 CREATE TABLE tbProduto (
 	codProduto INT PRIMARY KEY IDENTITY(1,1)

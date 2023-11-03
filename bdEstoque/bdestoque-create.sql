@@ -44,3 +44,4 @@ CREATE TABLE tbItensVenda(
 	, codVenda INT FOREIGN KEY REFERENCES tbVenda(codVenda)
 	, codProduto INT FOREIGN KEY REFERENCES tbProduto(codProduto)
 )
+
